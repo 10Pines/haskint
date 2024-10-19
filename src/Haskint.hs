@@ -28,11 +28,18 @@ functionApplicationParser :: Parser Expression
 functionApplicationParser = do
   name <- some letterChar
   space1
-  expression <- expressionParser 
+  expression <- expressionParser
   return $ FunctionApplication name expression
 
+parenthesisParser :: Parser Expression
+parenthesisParser = do
+  _ <- char '('
+  expression <- expressionParser
+  _ <- char ')'
+  return expression
+  
 expressionParser :: Parser Expression
-expressionParser = try functionApplicationParser <|> identifierParser <|> numberLiteralParser
+expressionParser =  try functionApplicationParser <|> parenthesisParser <|> identifierParser <|> numberLiteralParser
 
 parseExpression :: Text -> Maybe Expression
-parseExpression s = parseMaybe expressionParser s
+parseExpression = parseMaybe expressionParser

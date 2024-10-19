@@ -6,8 +6,6 @@ import Test.QuickCheck
 
 import Haskint
 
--- `main` is here so that this module can be run from GHCi on its own.  It is
--- not needed for automatic spec discovery.
 main :: IO ()
 main = hspec spec
 
@@ -32,6 +30,14 @@ spec = do
     it "parses function application of an identifier" $ do
       parseExpression "f a" `shouldBe` Just (FunctionApplication "f" (Identifier "a"))
 
-
-    -- it "is idempotent" $ property $
-    --   \str -> strip str === strip (strip str)
+    it "parses parenthesis" $ do
+      parseExpression "(1)" `shouldBe` Just (NumberLiteral 1)
+    
+    it "parses parenthesis in the middle" $ do
+      parseExpression "f (1)" `shouldBe` Just (FunctionApplication "f" (NumberLiteral 1))
+    
+    it "parses parenthesis double" $ do
+      parseExpression "f ((1))" `shouldBe` Just (FunctionApplication "f" (NumberLiteral 1))
+    
+    it "cannot parse empty parenthesis" $ do
+      parseExpression "()" `shouldBe` Nothing
