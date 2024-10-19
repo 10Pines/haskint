@@ -10,7 +10,7 @@ type Parser = Parsec Void Text
 data Expression
   = NumberLiteral Int
   | Identifier String
-  | FunctionApplication String Expression
+  | FunctionApplication Expression Expression
   deriving (Show, Eq)
 
 numberLiteralParser :: Parser Expression
@@ -26,7 +26,7 @@ identifierParser = do
 
 functionApplicationParser :: Parser Expression
 functionApplicationParser = do
-  name <- some letterChar
+  name <- identifierParser
   space1
   expression <- expressionParser
   return $ FunctionApplication name expression
@@ -39,7 +39,7 @@ parenthesisParser = do
   return expression
   
 expressionParser :: Parser Expression
-expressionParser =  try functionApplicationParser <|> parenthesisParser <|> identifierParser <|> numberLiteralParser
+expressionParser = try functionApplicationParser <|> parenthesisParser <|> identifierParser <|> numberLiteralParser
 
 parseExpression :: Text -> Maybe Expression
 parseExpression = parseMaybe expressionParser

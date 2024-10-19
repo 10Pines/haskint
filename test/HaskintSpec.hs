@@ -5,6 +5,7 @@ import Test.Hspec
 import Test.QuickCheck
 
 import Haskint
+import Haskint (Expression(FunctionApplication))
 
 main :: IO ()
 main = hspec spec
@@ -25,19 +26,31 @@ spec = do
       parseExpression "lala" `shouldBe` Just (Identifier "lala")
 
     it "parses function application of a number literal" $ do
-      parseExpression "f 1" `shouldBe` Just (FunctionApplication "f" (NumberLiteral 1))
+      parseExpression "f 1" `shouldBe` Just (application "f" (NumberLiteral 1))
 
     it "parses function application of an identifier" $ do
-      parseExpression "f a" `shouldBe` Just (FunctionApplication "f" (Identifier "a"))
+      parseExpression "f a" `shouldBe` Just (application "f" (Identifier "a"))
 
     it "parses parenthesis" $ do
       parseExpression "(1)" `shouldBe` Just (NumberLiteral 1)
     
     it "parses parenthesis in the middle" $ do
-      parseExpression "f (1)" `shouldBe` Just (FunctionApplication "f" (NumberLiteral 1))
+      parseExpression "f (1)" `shouldBe` Just (application "f" (NumberLiteral 1))
     
     it "parses parenthesis double" $ do
-      parseExpression "f ((1))" `shouldBe` Just (FunctionApplication "f" (NumberLiteral 1))
+      parseExpression "f ((1))" `shouldBe` Just (application "f" (NumberLiteral 1))
     
     it "cannot parse empty parenthesis" $ do
       parseExpression "()" `shouldBe` Nothing
+
+    -- it "parses applications of applications" $ do
+    --   parseExpression "f a b" `shouldBe` Just (
+    --       FunctionApplication
+    --         (application "f" (Identifier "a"))
+    --         (Identifier "b")
+    --     )
+
+    where
+      application :: String -> Expression -> Expression
+      application functionName argument = FunctionApplication (Identifier functionName) argument
+
