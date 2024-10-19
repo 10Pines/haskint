@@ -2,5 +2,8 @@
 
 add description of haskint here
 
-prueba debi
-prueba Erne
+## Run tests
+
+```bash
+ghcid -c='stack repl --test' --run=':main' --warnings
+```
