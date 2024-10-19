@@ -1,0 +1,52 @@
+# Compilados y binarios
+dist/
+dist-newstyle/
+cabal.sandbox.config
+cabal.sandbox/
+cabal-dev/
+*.o
+*.hi
+*.dyn_o
+*.dyn_hi
+*.prof
+*.aux
+*.hp
+*.eventlog
+
+# Stack
+.stack-work/
+.stack-work/*
+
+# Archivos temporales
+*.swp
+*.swo
+*.tmp
+*.log
+
+# Archivos de compilación
+*.out
+*.so
+*.dll
+*.dylib
+
+# Archivos de testeo
+.hsenv/
+dist/
+dist-*
+*.tix
+*.prof
+
+# Archivos generados por herramientas de documentación
+docs/
+
+# Editor-specific files
+.idea/
+.vscode/
+*.iml
+
+# Archivos relacionados con sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de Stack específicos de Windows
+stack.exe
