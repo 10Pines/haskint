@@ -9,16 +9,22 @@ type Parser = Parsec Void Text
 
 data Expression
   = NumberLiteral Int
+  | Identifier String
   deriving (Show, Eq)
 
+numberLiteralParser :: Parser Expression
+numberLiteralParser = do
+  numberDigits <- some digitChar
+  let numberValue = read numberDigits
+  return $ NumberLiteral numberValue
 
-parseNumberLiteral :: Parser Expression
-parseNumberLiteral = do
-  n <- many digitChar
-  let number = read n
-  return $ NumberLiteral number
+identifierParser :: Parser Expression
+identifierParser = do
+  name <- some letterChar
+  return $ Identifier name
 
+expressionParser :: Parser Expression
+expressionParser = identifierParser <|> numberLiteralParser
 
 parseExpression :: Text -> Maybe Expression
-parseExpression s =
-  parseMaybe (parseNumberLiteral) s
+parseExpression s = parseMaybe expressionParser s
