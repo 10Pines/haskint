@@ -26,6 +26,12 @@ spec = do
     it "parses variables" $ do
       parseExpression "lala" `shouldBe` Just (Identifier "lala")
 
+    it "parses function application of a number literal" $ do
+      parseExpression "f 1" `shouldBe` Just (FunctionApplication "f" (NumberLiteral 1))
+
+    it "parses function application of an identifier" $ do
+      parseExpression "f a" `shouldBe` Just (FunctionApplication "f" (Identifier "a"))
+
 
     -- it "is idempotent" $ property $
     --   \str -> strip str === strip (strip str)
