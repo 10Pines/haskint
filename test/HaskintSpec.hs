@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module HaskintSpec (main, spec) where
 
 import Test.Hspec
@@ -12,9 +13,9 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "strip" $ do
-    it "removes leading and trailing whitespace" $ do
-      strip "\t  foo bar\n" `shouldBe` "foo bar"
+  describe "parse" $ do
+    it "parses a number literal" $ do
+      parseExpression "12" `shouldBe` Just (NumberLiteral 12)
 
-    it "is idempotent" $ property $
-      \str -> strip str === strip (strip str)
+    -- it "is idempotent" $ property $
+    --   \str -> strip str === strip (strip str)
