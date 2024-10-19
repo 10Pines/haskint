@@ -4,6 +4,7 @@ module HaskintSpec (main, spec) where
 import Test.Hspec
 
 import Haskint
+import Haskint (Expression(Identifier, FunctionApplication))
 
 main :: IO ()
 main = hspec spec
@@ -46,6 +47,16 @@ spec = do
           FunctionApplication
             (application "f" (Identifier "a"))
             (Identifier "b")
+        )
+
+    it "parses sums" $ do
+      -- (+) (f x) (f y)
+      parseExpression "f x + f y" `shouldBe` Just (
+          FunctionApplication
+            (FunctionApplication
+              (Identifier "+")
+              (application "f" $ Identifier "x"))
+            (application "f" $ Identifier "y")
         )
 
     where
