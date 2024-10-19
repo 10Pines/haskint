@@ -26,10 +26,9 @@ identifierParser = do
 
 functionApplicationParser :: Parser Expression
 functionApplicationParser = do
-  name <- identifierParser
-  space1
-  expression <- expressionParser
-  return $ FunctionApplication name expression
+  firstExpression <- expressionInsideApplicationParser
+  restOfExpressions <- some (space1 >> expressionInsideApplicationParser)
+  return $ Prelude.foldl FunctionApplication firstExpression restOfExpressions
 
 parenthesisParser :: Parser Expression
 parenthesisParser = do
@@ -37,9 +36,12 @@ parenthesisParser = do
   expression <- expressionParser
   _ <- char ')'
   return expression
+
+expressionInsideApplicationParser :: Parser Expression
+expressionInsideApplicationParser = parenthesisParser <|> identifierParser <|> numberLiteralParser
   
 expressionParser :: Parser Expression
-expressionParser = try functionApplicationParser <|> parenthesisParser <|> identifierParser <|> numberLiteralParser
+expressionParser = try functionApplicationParser <|> expressionInsideApplicationParser
 
 parseExpression :: Text -> Maybe Expression
 parseExpression = parseMaybe expressionParser

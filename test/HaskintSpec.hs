@@ -43,12 +43,12 @@ spec = do
     it "cannot parse empty parenthesis" $ do
       parseExpression "()" `shouldBe` Nothing
 
-    -- it "parses applications of applications" $ do
-    --   parseExpression "f a b" `shouldBe` Just (
-    --       FunctionApplication
-    --         (application "f" (Identifier "a"))
-    --         (Identifier "b")
-    --     )
+    it "parses applications of applications" $ do
+      parseExpression "f a b" `shouldBe` Just (
+          FunctionApplication
+            (application "f" (Identifier "a"))
+            (Identifier "b")
+        )
 
     where
       application :: String -> Expression -> Expression
