@@ -1,6 +1,6 @@
 module Main (main) where
 
-import Data.String.Strip
+import Haskint
 
 main :: IO ()
 main = interact strip

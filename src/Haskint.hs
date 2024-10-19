@@ -1,4 +1,4 @@
-module Data.String.Strip (strip)  where
+module Haskint where
 
 import Data.Char
 
