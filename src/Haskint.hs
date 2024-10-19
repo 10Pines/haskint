@@ -26,9 +26,8 @@ identifierParser = do
 
 functionApplicationParser :: Parser Expression
 functionApplicationParser = do
-  firstExpression <- expressionInsideApplicationParser
-  restOfExpressions <- some (space1 >> expressionInsideApplicationParser)
-  return $ Prelude.foldl FunctionApplication firstExpression restOfExpressions
+  expressions <- sepBy1 expressionInsideApplicationParser space1
+  return $ Prelude.foldl1 FunctionApplication expressions
 
 parenthesisParser :: Parser Expression
 parenthesisParser = do
