@@ -2,10 +2,8 @@
 module HaskintSpec (main, spec) where
 
 import Test.Hspec
-import Test.QuickCheck
 
 import Haskint
-import Haskint (Expression(FunctionApplication))
 
 main :: IO ()
 main = hspec spec
